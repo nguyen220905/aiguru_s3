@@ -1,0 +1,26 @@
+# Git ignore for aiguru_s3
+
+# Raw crawled SQLite databases (total > 48 GB, exceeds GitHub 100MB file limit)
+crawl/db/
+crawl/db_wayback/
+crawl/db_alt/
+crawl/db_cc/
+crawl/wayback/zysj_index/
+crawl/wayback/*.cdx.tsv
+crawl/cc/
+
+# Cache and temporary data
+data/.cache/
+__pycache__/
+*.py[cod]
+*$py.class
+*.pid
+
+# Large log files
+crawl/logs/*.log
+*.log
+
+# Keep coverage and status summaries
+!crawl/coverage.csv
+!crawl/status_big.json
+!crawl/status_rest.json

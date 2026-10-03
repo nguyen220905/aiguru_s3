@@ -1,0 +1,1013 @@
+{
+ "updated": "2026-10-04 06:18:47",
+ "elapsed_min": 1154.6,
+ "groups": {
+  "iiyi.com": {
+   "queue": 0,
+   "rate": 2.0,
+   "disabled": false,
+   "strikes": 0,
+   "paused_for": 0,
+   "dead_hosts": [
+    "article.iiyi.com",
+    "bingli.iiyi.com"
+   ]
+  },
+  "39.net": {
+   "queue": 429766,
+   "rate": 0.26,
+   "disabled": false,
+   "strikes": 0,
+   "paused_for": 0,
+   "dead_hosts": []
+  },
+  "familydoctor.com.cn": {
+   "queue": 0,
+   "rate": 12.0,
+   "disabled": false,
+   "strikes": 0,
+   "paused_for": 0,
+   "dead_hosts": []
+  },
+  "bachmai.gov.vn": {
+   "queue": 0,
+   "rate": 2.0,
+   "disabled": false,
+   "strikes": 0,
+   "paused_for": 0,
+   "dead_hosts": []
+  },
+  "baoangiang.com.vn": {
+   "queue": 0,
+   "rate": 2.0,
+   "disabled": false,
+   "strikes": 0,
+   "paused_for": 0,
+   "dead_hosts": []
+  },
+  "baocantho.com.vn": {
+   "queue": 0,
+   "rate": 2.0,
+   "disabled": false,
+   "strikes": 0,
+   "paused_for": 0,
+   "dead_hosts": []
+  },
+  "baochinhphu.vn": {
+   "queue": 0,
+   "rate": 2.0,
+   "disabled": false,
+   "strikes": 0,
+   "paused_for": 0,
+   "dead_hosts": []
+  },
+  "baodanang.vn": {
+   "queue": 0,
+   "rate": 2.0,
+   "disabled": false,
+   "strikes": 0,
+   "paused_for": 0,
+   "dead_hosts": []
+  },
+  "baogialai.com.vn": {
+   "queue": 0,
+   "rate": 2.0,
+   "disabled": false,
+   "strikes": 0,
+   "paused_for": 0,
+   "dead_hosts": []
+  },
+  "baohaiphong.vn": {
+   "queue": 0,
+   "rate": 2.0,
+   "disabled": false,
+   "strikes": 0,
+   "paused_for": 0,
+   "dead_hosts": []
+  },
+  "baolangson.vn": {
+   "queue": 0,
+   "rate": 2.0,
+   "disabled": false,
+   "strikes": 0,
+   "paused_for": 0,
+   "dead_hosts": []
+  },
+  "baonghean.vn": {
+   "queue": 0,
+   "rate": 2.0,
+   "disabled": false,
+   "strikes": 0,
+   "paused_for": 0,
+   "dead_hosts": []
+  },
+  "baophutho.vn": {
+   "queue": 0,
+   "rate": 2.0,
+   "disabled": false,
+   "strikes": 0,
+   "paused_for": 0,
+   "dead_hosts": []
+  },
+  "baoquangninh.vn": {
+   "queue": 0,
+   "rate": 2.0,
+   "disabled": false,
+   "strikes": 0,
+   "paused_for": 0,
+   "dead_hosts": []
+  },
+  "baoquangtri.vn": {
+   "queue": 0,
+   "rate": 2.0,
+   "disabled": false,
+   "strikes": 0,
+   "paused_for": 0,
+   "dead_hosts": []
+  },
+  "baotayninh.vn": {
+   "queue": 0,
+   "rate": 2.0,
+   "disabled": false,
+   "strikes": 0,
+   "paused_for": 0,
+   "dead_hosts": []
+  },
+  "baothanhhoa.vn": {
+   "queue": 0,
+   "rate": 2.0,
+   "disabled": false,
+   "strikes": 0,
+   "paused_for": 0,
+   "dead_hosts": []
+  },
+  "baovinhlong.com.vn": {
+   "queue": 0,
+   "rate": 2.0,
+   "disabled": false,
+   "strikes": 0,
+   "paused_for": 0,
+   "dead_hosts": []
+  },
+  "benhviennhitrunguong.gov.vn": {
+   "queue": 0,
+   "rate": 2.0,
+   "disabled": false,
+   "strikes": 0,
+   "paused_for": 0,
+   "dead_hosts": []
+  },
+  "benhvienvietduc.org": {
+   "queue": 0,
+   "rate": 2.0,
+   "disabled": false,
+   "strikes": 0,
+   "paused_for": 0,
+   "dead_hosts": []
+  },
+  "dantri.com.vn": {
+   "queue": 0,
+   "rate": 1.33,
+   "disabled": false,
+   "strikes": 0,
+   "paused_for": 0,
+   "dead_hosts": [
+    "dantri.com.vn"
+   ]
+  },
+  "99.com.cn": {
+   "queue": 0,
+   "rate": 2.0,
+   "disabled": false,
+   "strikes": 0,
+   "paused_for": 0,
+   "dead_hosts": []
+  },
+  "giadinhonline.vn": {
+   "queue": 0,
+   "rate": 3.0,
+   "disabled": false,
+   "strikes": 0,
+   "paused_for": 0,
+   "dead_hosts": []
+  },
+  "hanoimoi.vn": {
+   "queue": 0,
+   "rate": 2.0,
+   "disabled": false,
+   "strikes": 0,
+   "paused_for": 0,
+   "dead_hosts": []
+  },
+  "people.com.cn": {
+   "queue": 0,
+   "rate": 2.0,
+   "disabled": false,
+   "strikes": 0,
+   "paused_for": 0,
+   "dead_hosts": []
+  },
+  "hellobacsi.com": {
+   "queue": 0,
+   "rate": 2.0,
+   "disabled": false,
+   "strikes": 0,
+   "paused_for": 0,
+   "dead_hosts": []
+  },
+  "jb39.com": {
+   "queue": 0,
+   "rate": 2.0,
+   "disabled": false,
+   "strikes": 0,
+   "paused_for": 0,
+   "dead_hosts": []
+  },
+  "khoahocphothong.vn": {
+   "queue": 0,
+   "rate": 2.0,
+   "disabled": false,
+   "strikes": 0,
+   "paused_for": 0,
+   "dead_hosts": []
+  },
+  "laodong.vn": {
+   "queue": 31278,
+   "rate": 0.2,
+   "disabled": true,
+   "strikes": 8,
+   "paused_for": 0,
+   "dead_hosts": []
+  },
+  "medlatec.vn": {
+   "queue": 0,
+   "rate": 3.0,
+   "disabled": false,
+   "strikes": 0,
+   "paused_for": 0,
+   "dead_hosts": []
+  },
+  "vietnamplus.vn": {
+   "queue": 0,
+   "rate": 2.0,
+   "disabled": false,
+   "strikes": 0,
+   "paused_for": 0,
+   "dead_hosts": []
+  },
+  "nhandan.vn": {
+   "queue": 0,
+   "rate": 2.0,
+   "disabled": false,
+   "strikes": 0,
+   "paused_for": 0,
+   "dead_hosts": []
+  },
+  "nhathuoclongchau.com.vn": {
+   "queue": 79594,
+   "rate": 0.2,
+   "disabled": true,
+   "strikes": 8,
+   "paused_for": 0,
+   "dead_hosts": []
+  },
+  "baodaklak.vn": {
+   "queue": 0,
+   "rate": 2.0,
+   "disabled": false,
+   "strikes": 0,
+   "paused_for": 0,
+   "dead_hosts": []
+  },
+  "pharmacity.io": {
+   "queue": 5329,
+   "rate": 0.2,
+   "disabled": true,
+   "strikes": 8,
+   "paused_for": 0,
+   "dead_hosts": []
+  },
+  "qihuangzhishu.com": {
+   "queue": 0,
+   "rate": 6.0,
+   "disabled": false,
+   "strikes": 0,
+   "paused_for": 0,
+   "dead_hosts": []
+  },
+  "suckhoecongdongonline.vn": {
+   "queue": 0,
+   "rate": 10.0,
+   "disabled": false,
+   "strikes": 0,
+   "paused_for": 0,
+   "dead_hosts": []
+  },
+  "suckhoedoisong.vn": {
+   "queue": 0,
+   "rate": 4.0,
+   "disabled": false,
+   "strikes": 0,
+   "paused_for": 0,
+   "dead_hosts": []
+  },
+  "suckhoeviet.org.vn": {
+   "queue": 0,
+   "rate": 2.0,
+   "disabled": false,
+   "strikes": 0,
+   "paused_for": 0,
+   "dead_hosts": []
+  },
+  "tamanhhospital.vn": {
+   "queue": 4257,
+   "rate": 0.2,
+   "disabled": true,
+   "strikes": 8,
+   "paused_for": 0,
+   "dead_hosts": []
+  },
+  "pmphai.com": {
+   "queue": 0,
+   "rate": 2.0,
+   "disabled": false,
+   "strikes": 0,
+   "paused_for": 0,
+   "dead_hosts": []
+  },
+  "thanhnien.vn": {
+   "queue": 0,
+   "rate": 4.0,
+   "disabled": false,
+   "strikes": 0,
+   "paused_for": 0,
+   "dead_hosts": []
+  },
+  "thaythuocvietnam.vn": {
+   "queue": 0,
+   "rate": 2.0,
+   "disabled": false,
+   "strikes": 0,
+   "paused_for": 0,
+   "dead_hosts": []
+  },
+  "tiemchunglongchau.com.vn": {
+   "queue": 0,
+   "rate": 2.0,
+   "disabled": false,
+   "strikes": 0,
+   "paused_for": 0,
+   "dead_hosts": []
+  },
+  "tienphong.vn": {
+   "queue": 0,
+   "rate": 2.0,
+   "disabled": false,
+   "strikes": 0,
+   "paused_for": 0,
+   "dead_hosts": []
+  },
+  "tuoitre.vn": {
+   "queue": 0,
+   "rate": 2.0,
+   "disabled": false,
+   "strikes": 0,
+   "paused_for": 0,
+   "dead_hosts": []
+  },
+  "vietnamnet.vn": {
+   "queue": 0,
+   "rate": 2.0,
+   "disabled": false,
+   "strikes": 0,
+   "paused_for": 0,
+   "dead_hosts": []
+  },
+  "vnexpress.net": {
+   "queue": 0,
+   "rate": 2.0,
+   "disabled": false,
+   "strikes": 0,
+   "paused_for": 0,
+   "dead_hosts": []
+  },
+  "vov.vn": {
+   "queue": 9780,
+   "rate": 0.2,
+   "disabled": true,
+   "strikes": 8,
+   "paused_for": 0,
+   "dead_hosts": []
+  },
+  "vov2.vov.vn": {
+   "queue": 0,
+   "rate": 2.0,
+   "disabled": false,
+   "strikes": 0,
+   "paused_for": 0,
+   "dead_hosts": []
+  },
+  "a-hospital.com": {
+   "queue": 0,
+   "rate": 10.0,
+   "disabled": false,
+   "strikes": 0,
+   "paused_for": 0,
+   "dead_hosts": []
+  },
+  "baidu.com": {
+   "queue": 0,
+   "rate": 2.0,
+   "disabled": false,
+   "strikes": 0,
+   "paused_for": 0,
+   "dead_hosts": []
+  },
+  "familydoctor.cn": {
+   "queue": 0,
+   "rate": 2.0,
+   "disabled": false,
+   "strikes": 0,
+   "paused_for": 0,
+   "dead_hosts": []
+  },
+  "msdmanuals.cn": {
+   "queue": 0,
+   "rate": 2.0,
+   "disabled": false,
+   "strikes": 0,
+   "paused_for": 0,
+   "dead_hosts": []
+  },
+  "pharmacity.vn": {
+   "queue": 0,
+   "rate": 2.0,
+   "disabled": false,
+   "strikes": 0,
+   "paused_for": 0,
+   "dead_hosts": []
+  },
+  "qdnd.vn": {
+   "queue": 0,
+   "rate": 2.0,
+   "disabled": false,
+   "strikes": 0,
+   "paused_for": 0,
+   "dead_hosts": []
+  },
+  "sggp.org.vn": {
+   "queue": 0,
+   "rate": 2.0,
+   "disabled": false,
+   "strikes": 0,
+   "paused_for": 0,
+   "dead_hosts": []
+  },
+  "vinmec.com": {
+   "queue": 0,
+   "rate": 3.0,
+   "disabled": false,
+   "strikes": 0,
+   "paused_for": 0,
+   "dead_hosts": []
+  },
+  "wujue.com": {
+   "queue": 0,
+   "rate": 6.0,
+   "disabled": false,
+   "strikes": 0,
+   "paused_for": 0,
+   "dead_hosts": []
+  },
+  "youlai.cn": {
+   "queue": 0,
+   "rate": 8.0,
+   "disabled": false,
+   "strikes": 0,
+   "paused_for": 0,
+   "dead_hosts": []
+  },
+  "zydcd.com": {
+   "queue": 0,
+   "rate": 8.0,
+   "disabled": false,
+   "strikes": 0,
+   "paused_for": 0,
+   "dead_hosts": []
+  },
+  "youmed.vn": {
+   "queue": 5826,
+   "rate": 0.2,
+   "disabled": true,
+   "strikes": 8,
+   "paused_for": 0,
+   "dead_hosts": []
+  },
+  "zhongyibaodian.net": {
+   "queue": 0,
+   "rate": 8.0,
+   "disabled": false,
+   "strikes": 0,
+   "paused_for": 0,
+   "dead_hosts": []
+  },
+  "zysjonline.com": {
+   "queue": 243343,
+   "rate": 0.2,
+   "disabled": true,
+   "strikes": 8,
+   "paused_for": 0,
+   "dead_hosts": []
+  }
+ },
+ "hosts": {
+  "article.iiyi.com": {
+   "already_done": 0,
+   "error": 60,
+   "pending_at_start": 5641
+  },
+  "ask.39.net": {
+   "already_done": 1475,
+   "ok": 43192,
+   "error": 482,
+   "captcha": 89,
+   "notfound": 19,
+   "pending_at_start": 335900
+  },
+  "ask.familydoctor.com.cn": {
+   "already_done": 3,
+   "pending_at_start": 0
+  },
+  "baby.39.net": {
+   "already_done": 150,
+   "ok": 3499,
+   "error": 12,
+   "pending_at_start": 27471
+  },
+  "bachmai.gov.vn": {
+   "already_done": 2783,
+   "pending_at_start": 0
+  },
+  "baidianfeng.familydoctor.com.cn": {
+   "already_done": 228,
+   "ok": 3481,
+   "error": 89,
+   "pending_at_start": 3570
+  },
+  "baoangiang.com.vn": {
+   "already_done": 7693,
+   "ok": 3045,
+   "pending_at_start": 3045
+  },
+  "baocantho.com.vn": {
+   "already_done": 8769,
+   "ok": 3247,
+   "pending_at_start": 3247
+  },
+  "baochinhphu.vn": {
+   "already_done": 2301,
+   "ok": 1,
+   "pending_at_start": 1
+  },
+  "baodanang.vn": {
+   "already_done": 9082,
+   "ok": 5418,
+   "pending_at_start": 5418
+  },
+  "baogialai.com.vn": {
+   "already_done": 3290,
+   "pending_at_start": 0
+  },
+  "baohaiphong.vn": {
+   "already_done": 9083,
+   "ok": 7203,
+   "pending_at_start": 7203
+  },
+  "baolangson.vn": {
+   "already_done": 1981,
+   "pending_at_start": 0
+  },
+  "baonghean.vn": {
+   "already_done": 9082,
+   "ok": 6859,
+   "pending_at_start": 6859
+  },
+  "baophutho.vn": {
+   "already_done": 1288,
+   "pending_at_start": 0
+  },
+  "baoquangninh.vn": {
+   "already_done": 2912,
+   "pending_at_start": 0
+  },
+  "baoquangtri.vn": {
+   "already_done": 5483,
+   "pending_at_start": 0
+  },
+  "baotayninh.vn": {
+   "already_done": 1198,
+   "pending_at_start": 0
+  },
+  "baothanhhoa.vn": {
+   "already_done": 782,
+   "pending_at_start": 0
+  },
+  "baovinhlong.com.vn": {
+   "already_done": 5113,
+   "pending_at_start": 0
+  },
+  "benhviennhitrunguong.gov.vn": {
+   "already_done": 1200,
+   "pending_at_start": 0
+  },
+  "benhvienvietduc.org": {
+   "already_done": 425,
+   "pending_at_start": 0
+  },
+  "bingli.iiyi.com": {
+   "already_done": 0,
+   "error": 60,
+   "pending_at_start": 24990
+  },
+  "byby.39.net": {
+   "already_done": 22,
+   "ok": 51,
+   "pending_at_start": 417
+  },
+  "cancer.39.net": {
+   "already_done": 59,
+   "ok": 1074,
+   "error": 6,
+   "pending_at_start": 8356
+  },
+  "care.39.net": {
+   "already_done": 105,
+   "ok": 1950,
+   "pending_at_start": 15029
+  },
+  "dantri.com.vn": {
+   "already_done": 448,
+   "ok": 263,
+   "blocked": 1,
+   "http4xx": 100,
+   "error": 63,
+   "pending_at_start": 1615
+  },
+  "ek.39.net": {
+   "already_done": 35,
+   "ok": 389,
+   "error": 3,
+   "pending_at_start": 3187
+  },
+  "fitness.39.net": {
+   "already_done": 75,
+   "ok": 1547,
+   "error": 11,
+   "pending_at_start": 11991
+  },
+  "fk.39.net": {
+   "already_done": 68,
+   "ok": 1275,
+   "error": 5,
+   "pending_at_start": 9744
+  },
+  "fk.99.com.cn": {
+   "already_done": 1,
+   "pending_at_start": 0
+  },
+  "food.39.net": {
+   "already_done": 71,
+   "ok": 1399,
+   "error": 4,
+   "pending_at_start": 10953
+  },
+  "gan.39.net": {
+   "already_done": 46,
+   "ok": 654,
+   "error": 3,
+   "pending_at_start": 4981
+  },
+  "gc.39.net": {
+   "already_done": 26,
+   "ok": 221,
+   "error": 2,
+   "pending_at_start": 1720
+  },
+  "giadinhonline.vn": {
+   "already_done": 4755,
+   "ok": 11973,
+   "error": 1,
+   "blocked": 1,
+   "pending_at_start": 11974
+  },
+  "gk.39.net": {
+   "already_done": 26,
+   "ok": 274,
+   "error": 1,
+   "pending_at_start": 2033
+  },
+  "hanoimoi.vn": {
+   "already_done": 1283,
+   "pending_at_start": 0
+  },
+  "health.people.com.cn": {
+   "already_done": 1348,
+   "pending_at_start": 0
+  },
+  "heart.39.net": {
+   "already_done": 54,
+   "ok": 798,
+   "error": 5,
+   "pending_at_start": 5911
+  },
+  "hellobacsi.com": {
+   "already_done": 8803,
+   "ok": 2942,
+   "home": 2,
+   "pending_at_start": 2944
+  },
+  "jb39.com": {
+   "already_done": 7304,
+   "ok": 2,
+   "pending_at_start": 2
+  },
+  "jbk.39.net": {
+   "already_done": 107,
+   "ok": 2481,
+   "pending_at_start": 19035
+  },
+  "khoahocphothong.vn": {
+   "already_done": 8118,
+   "ok": 25,
+   "pending_at_start": 25
+  },
+  "laodong.vn": {
+   "already_done": 0,
+   "blocked": 9,
+   "pending_at_start": 31282
+  },
+  "man.39.net": {
+   "already_done": 47,
+   "ok": 623,
+   "error": 4,
+   "pending_at_start": 5273
+  },
+  "medlatec.vn": {
+   "already_done": 13192,
+   "ok": 11540,
+   "notfound": 30,
+   "pending_at_start": 11570
+  },
+  "mega.vietnamplus.vn": {
+   "already_done": 2,
+   "pending_at_start": 0
+  },
+  "nhandan.vn": {
+   "already_done": 5225,
+   "pending_at_start": 0
+  },
+  "nhathuoclongchau.com.vn": {
+   "already_done": 0,
+   "blocked": 9,
+   "pending_at_start": 79598
+  },
+  "nk.39.net": {
+   "already_done": 50,
+   "ok": 839,
+   "error": 3,
+   "pending_at_start": 6600
+  },
+  "pf.39.net": {
+   "already_done": 29,
+   "ok": 210,
+   "pending_at_start": 1509
+  },
+  "phunusuckhoe.giadinhonline.vn": {
+   "already_done": 7719,
+   "ok": 19858,
+   "pending_at_start": 19858
+  },
+  "phuyen.baodaklak.vn": {
+   "already_done": 6252,
+   "pending_at_start": 0
+  },
+  "pmc-ecm-healthblog.beta.pharmacity.io": {
+   "already_done": 0,
+   "blocked": 9,
+   "pending_at_start": 5333
+  },
+  "qihuangzhishu.com": {
+   "already_done": 13207,
+   "ok": 10430,
+   "pending_at_start": 10430
+  },
+  "qy.familydoctor.com.cn": {
+   "already_done": 19,
+   "ok": 18,
+   "error": 3,
+   "pending_at_start": 21
+  },
+  "shen.39.net": {
+   "already_done": 43,
+   "ok": 410,
+   "pending_at_start": 3180
+  },
+  "sj.39.net": {
+   "already_done": 23,
+   "ok": 123,
+   "error": 1,
+   "pending_at_start": 919
+  },
+  "special.vietnamplus.vn": {
+   "already_done": 1,
+   "pending_at_start": 0
+  },
+  "suckhoecongdongonline.vn": {
+   "already_done": 22063,
+   "ok": 132440,
+   "pending_at_start": 132440
+  },
+  "suckhoedoisong.vn": {
+   "already_done": 18023,
+   "ok": 67462,
+   "error": 336,
+   "home": 2,
+   "pending_at_start": 67800
+  },
+  "suckhoeviet.org.vn": {
+   "already_done": 5619,
+   "ok": 8,
+   "pending_at_start": 8
+  },
+  "tamanhhospital.vn": {
+   "already_done": 0,
+   "blocked": 9,
+   "pending_at_start": 4261
+  },
+  "test.pmphai.com": {
+   "already_done": 9066,
+   "ok": 6052,
+   "error": 2,
+   "pending_at_start": 6054
+  },
+  "thanhnien.vn": {
+   "already_done": 17960,
+   "ok": 54004,
+   "error": 147,
+   "pending_at_start": 54151
+  },
+  "thaythuocvietnam.vn": {
+   "already_done": 2927,
+   "pending_at_start": 0
+  },
+  "tiemchunglongchau.com.vn": {
+   "already_done": 9083,
+   "ok": 4196,
+   "notfound": 2,
+   "pending_at_start": 4198
+  },
+  "tienphong.vn": {
+   "already_done": 3021,
+   "pending_at_start": 0
+  },
+  "tnb.39.net": {
+   "already_done": 37,
+   "ok": 515,
+   "error": 3,
+   "pending_at_start": 4141
+  },
+  "tuoitre.vn": {
+   "already_done": 3877,
+   "ok": 15,
+   "error": 1,
+   "pending_at_start": 16
+  },
+  "v.familydoctor.com.cn": {
+   "already_done": 10,
+   "pending_at_start": 0
+  },
+  "vietnamnet.vn": {
+   "already_done": 9081,
+   "ok": 6461,
+   "notfound": 1,
+   "pending_at_start": 6462
+  },
+  "vnexpress.net": {
+   "already_done": 2019,
+   "ok": 36,
+   "pending_at_start": 36
+  },
+  "vov.vn": {
+   "already_done": 0,
+   "blocked": 9,
+   "pending_at_start": 9784
+  },
+  "vov2.vov.vn": {
+   "already_done": 6899,
+   "pending_at_start": 0
+  },
+  "wei.39.net": {
+   "already_done": 36,
+   "ok": 495,
+   "error": 2,
+   "pending_at_start": 3858
+  },
+  "woman.39.net": {
+   "already_done": 77,
+   "ok": 1445,
+   "error": 10,
+   "pending_at_start": 11610
+  },
+  "www.a-hospital.com": {
+   "already_done": 22313,
+   "ok": 147025,
+   "error": 1,
+   "pending_at_start": 147026
+  },
+  "www.baidu.com": {
+   "already_done": 2631,
+   "pending_at_start": 0
+  },
+  "www.familydoctor.cn": {
+   "already_done": 44,
+   "pending_at_start": 0
+  },
+  "www.familydoctor.com.cn": {
+   "already_done": 26110,
+   "ok": 418988,
+   "error": 2348,
+   "home": 4,
+   "notfound": 3,
+   "pending_at_start": 421343
+  },
+  "www.msdmanuals.cn": {
+   "already_done": 6173,
+   "pending_at_start": 0
+  },
+  "www.pharmacity.vn": {
+   "already_done": 69,
+   "pending_at_start": 0
+  },
+  "www.qdnd.vn": {
+   "already_done": 3700,
+   "pending_at_start": 0
+  },
+  "www.sggp.org.vn": {
+   "already_done": 1853,
+   "pending_at_start": 0
+  },
+  "www.vietnamplus.vn": {
+   "already_done": 3695,
+   "pending_at_start": 0
+  },
+  "www.vinmec.com": {
+   "already_done": 13216,
+   "ok": 12912,
+   "notfound": 1,
+   "pending_at_start": 12913
+  },
+  "www.wujue.com": {
+   "already_done": 13144,
+   "ok": 40099,
+   "error": 98,
+   "pending_at_start": 40197
+  },
+  "www.youlai.cn": {
+   "already_done": 18094,
+   "ok": 27952,
+   "notfound": 73,
+   "pending_at_start": 28025
+  },
+  "www.zydcd.com": {
+   "already_done": 18096,
+   "ok": 57917,
+   "home": 2651,
+   "error": 16,
+   "pending_at_start": 60584
+  },
+  "yanglao.familydoctor.com.cn": {
+   "already_done": 2,
+   "pending_at_start": 0
+  },
+  "youmed.vn": {
+   "already_done": 1359,
+   "blocked": 9,
+   "pending_at_start": 5830
+  },
+  "ypk.familydoctor.com.cn": {
+   "already_done": 1,
+   "pending_at_start": 0
+  },
+  "zhongyibaodian.net": {
+   "already_done": 18090,
+   "ok": 128608,
+   "error": 2,
+   "pending_at_start": 128610
+  },
+  "zysjonline.com": {
+   "already_done": 0,
+   "blocked": 9,
+   "pending_at_start": 243347
+  }
+ }
+}
