@@ -182,7 +182,7 @@ def upload_file_with_retry(
             sz_mb = local_path.stat().st_size / (1024 * 1024)
             speed = sz_mb / elapsed if elapsed > 0 else 0
             log.info(
-                "✓ Uploaded %s (%.2f MB in %.1fs, %.2f MB/s)",
+                "[OK] Uploaded %s (%.2f MB in %.1fs, %.2f MB/s)",
                 path_in_repo,
                 sz_mb,
                 elapsed,
