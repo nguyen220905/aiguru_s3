@@ -1,18 +1,19 @@
-"""Specialized high-performance async crawler for *.39.net domains.
+"""Specialized high-performance polite async crawler for *.39.net domains.
 
-Features:
-- Uses curl_cffi with Chrome 124 TLS impersonation to bypass 39.net bot detection & slider captchas
-- Fallback to HTTP entry (which cleanly redirects to HTTPS) to avoid TLS connection resets
-- Concurrent worker pool across all 22 subdomains of 39.net
-- Direct compatibility with existing crawl/db/<host>.sqlite databases (zstd level 6 compression)
+Design:
+- Uses curl_cffi with Chrome 124 TLS impersonation
+- Uses HTTP entry URL (which cleanly redirects to HTTPS) to avoid port 443 TLS timeouts
+- Strict Token-Bucket Rate Limiter (default 2.5 req/s, max concurrency 4) to stay under 39.net WAF thresholds
+- Automatic global cooldown (3 minutes) if verify.html / slider captcha is encountered, then probe before resuming
+- Saves directly to crawl/db/<host>.sqlite with zstd level 6 compression and WAL mode
 - Resumable: queries existing sqlite databases so previously crawled URLs are skipped
-- Real-time throughput (req/s) and host completion reporting
+- Prioritizes the 21 smaller subdomains first, then ask.39.net
 
 Usage:
     python crawler/crawl_39net.py                    # crawl all pending 39.net subdomains
-    python crawler/crawl_39net.py --concurrency 16   # 16 concurrent requests
-    python crawler/crawl_39net.py --hosts ask.39.net # only crawl ask.39.net
     python crawler/crawl_39net.py --hosts smaller    # crawl all 21 smaller subdomains first
+    python crawler/crawl_39net.py --hosts ask.39.net # crawl ask.39.net
+    python crawler/crawl_39net.py --rate 2.0         # set rate limit to 2.0 req/s
 """
 
 import argparse
@@ -64,7 +65,7 @@ def is_non_html(final_url: str, ctype: str, body: bytes) -> bool:
 
 def classify(status: int, final_url: str, body: bytes, headers: dict) -> str:
     low = body[:4000].lower()
-    if "verify.html" in final_url or "captcha" in final_url.lower() or "滑动拼图验证".encode() in body[:6000]:
+    if "verify.html" in final_url or "captcha" in final_url.lower():
         return "captcha"
     if b"just a moment..." in low or b"attention required! | cloudflare" in low:
         return "blocked"
@@ -130,7 +131,7 @@ class HostStore:
         self.conn.commit()
 
     async def maybe_flush(self, force: bool = False):
-        if not self.buf or (not force and len(self.buf) < 100 and time.time() - self.last_flush < 10):
+        if not self.buf or (not force and len(self.buf) < 50 and time.time() - self.last_flush < 10):
             return
         async with self.lock:
             rows, self.buf = self.buf, []
@@ -149,11 +150,33 @@ class HostStore:
             pass
 
 
+class TokenBucketRateLimiter:
+    """Accurate rate limiter to avoid triggering WAF rate thresholds."""
+
+    def __init__(self, rate: float):
+        self.rate = rate
+        self.interval = 1.0 / rate if rate > 0 else 0.5
+        self.next_time = time.monotonic()
+        self.lock = asyncio.Lock()
+
+    async def wait(self):
+        async with self.lock:
+            now = time.monotonic()
+            if self.next_time <= now:
+                self.next_time = now + self.interval
+                return
+            wait_sec = self.next_time - now
+            self.next_time += self.interval
+        await asyncio.sleep(wait_sec)
+
+
 class Crawler39Net:
-    def __init__(self, concurrency: int = 12, host_filter: str = "all", limit: int = 0):
+    def __init__(self, rate: float = 2.5, concurrency: int = 4, host_filter: str = "all", limit: int = 0):
+        self.rate = rate
         self.concurrency = concurrency
         self.host_filter = host_filter
         self.limit = limit
+        self.limiter = TokenBucketRateLimiter(rate)
         self.stores: Dict[str, HostStore] = {}
         self.queue: asyncio.Queue = asyncio.Queue()
         self.total_queued = 0
@@ -162,8 +185,11 @@ class Crawler39Net:
         self.err_count = 0
         self.captcha_count = 0
         self.start_time = time.time()
-        self.session_lock = asyncio.Lock()
-        self.active_sessions: List[AsyncSession] = []
+
+        # Global pause state when verify.html triggers
+        self.is_paused = False
+        self.pause_event = asyncio.Event()
+        self.pause_event.set()  # Initially unpaused
 
     def load_corpus(self):
         log.info("Reading corpus from %s...", CORPUS)
@@ -173,7 +199,6 @@ class Crawler39Net:
 
         hosts = sorted(df_39["host"].unique())
         if self.host_filter == "smaller":
-            # All 39.net subdomains except ask.39.net
             hosts = [h for h in hosts if h != "ask.39.net"]
         elif self.host_filter != "all":
             selected = set(self.host_filter.split(","))
@@ -200,11 +225,7 @@ class Crawler39Net:
             total_pending += cnt
             log.info("  Host %-25s: %7d pending (already done: %7d)", h, cnt, len(done_ids))
 
-        # Interleave items across hosts to prioritize diversity and finish small hosts quickly
-        all_items = []
         rng = random.Random(42)
-
-        # Separate ask.39.net from smaller hosts
         smaller_items = []
         ask_items = []
         for h, items in tasks_by_host.items():
@@ -217,7 +238,7 @@ class Crawler39Net:
         rng.shuffle(smaller_items)
         rng.shuffle(ask_items)
 
-        # Small hosts first, then ask.39.net
+        # Prioritize smaller hosts first to reach 100% on medical article sections quickly
         all_items = smaller_items + ask_items
 
         if self.limit > 0:
@@ -229,6 +250,45 @@ class Crawler39Net:
         self.total_queued = len(all_items)
         log.info("Total pending URLs queued for crawl: %d", self.total_queued)
 
+    async def trigger_cooldown(self, trigger_url: str):
+        """When verify.html is detected, pause all workers and wait for IP rate limit reset."""
+        if self.is_paused:
+            return  # Already handling pause
+
+        self.is_paused = True
+        self.pause_event.clear()
+        self.captcha_count += 1
+
+        pause_seconds = 180  # 3 minutes cooldown
+        log.warning(
+            "CAPTCHA / VERIFY detected on %s! Pausing all workers for %ds cooldown...",
+            trigger_url,
+            pause_seconds,
+        )
+
+        await asyncio.sleep(pause_seconds)
+
+        # Probe to see if unblocked
+        log.info("Cooldown elapsed. Probing 39.net to verify unblock...")
+        probe_success = False
+        try:
+            async with AsyncSession(impersonate="chrome124") as test_s:
+                r = await test_s.get("http://jbk.39.net/zhengzhuang/tt/", timeout=10)
+                if r.status_code == 200 and "verify.html" not in str(r.url):
+                    probe_success = True
+        except Exception as e:
+            log.warning("Probe exception: %s", e)
+
+        if probe_success:
+            log.info("Probe SUCCESS! 39.net rate limit cleared. Resuming crawl...")
+            self.is_paused = False
+            self.pause_event.set()
+        else:
+            log.warning("Probe still blocked. Waiting additional 180s...")
+            await asyncio.sleep(180)
+            self.is_paused = False
+            self.pause_event.set()
+
     async def fetch_url(self, session: AsyncSession, item: Tuple[str, int, str, int]):
         host, doc_id, url, attempts = item
         store = self.stores[host]
@@ -238,6 +298,10 @@ class Crawler39Net:
         request_url = url
         if request_url.startswith("https://"):
             request_url = "http://" + request_url[8:]
+
+        # Wait for rate limiter and pause event
+        await self.pause_event.wait()
+        await self.limiter.wait()
 
         status, final_url, ctype, body, err = None, None, None, b"", None
         kind = "error"
@@ -257,12 +321,11 @@ class Crawler39Net:
             kind = "home"
 
         if kind == "captcha":
-            self.captcha_count += 1
-            log.warning("Received captcha on %s, backing off 15s...", host)
-            await asyncio.sleep(15)
+            # Requeue and trigger cooldown
             if attempts < MAX_ATTEMPTS:
                 await self.queue.put((host, doc_id, url, attempts))
-                return
+            asyncio.create_task(self.trigger_cooldown(url))
+            return
         elif kind == "error":
             self.err_count += 1
             if attempts < MAX_ATTEMPTS:
@@ -292,12 +355,9 @@ class Crawler39Net:
                 try:
                     await self.fetch_url(session, item)
                 except Exception as e:
-                    log.error("Worker %d exception: %s", worker_id, e)
+                    log.error("Worker %d unexpected error: %s", worker_id, e)
                 finally:
                     self.queue.task_done()
-
-                # Polite spacing per worker (100-300ms)
-                await asyncio.sleep(random.uniform(0.1, 0.3))
 
     async def progress_reporter(self):
         prev_done = 0
@@ -309,8 +369,10 @@ class Crawler39Net:
             d_done = self.done_count - prev_done
             rate = d_done / dt if dt > 0 else 0
             pct = (self.done_count / self.total_queued * 100) if self.total_queued > 0 else 0
+            status_str = "PAUSED (Cooldown)" if self.is_paused else "RUNNING"
             log.info(
-                "[PROGRESS] Done: %d/%d (%.1f%%) | OK: %d | Err: %d | Captcha: %d | Rate: %.2f req/s",
+                "[%s] Done: %d/%d (%.1f%%) | OK: %d | Err: %d | Captcha: %d | Rate: %.2f req/s",
+                status_str,
                 self.done_count,
                 self.total_queued,
                 pct,
@@ -322,7 +384,6 @@ class Crawler39Net:
             prev_done = self.done_count
             prev_time = now
 
-            # Periodic flush across all stores
             for store in self.stores.values():
                 await store.maybe_flush(force=True)
 
@@ -338,7 +399,6 @@ class Crawler39Net:
         await asyncio.gather(*workers)
         reporter_task.cancel()
 
-        # Final flush & close
         for store in self.stores.values():
             store.close()
 
@@ -350,13 +410,14 @@ class Crawler39Net:
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Specialized crawler for 39.net")
-    parser.add_argument("--concurrency", type=int, default=12, help="Max concurrent workers (default 12)")
+    parser = argparse.ArgumentParser(description="Specialized polite crawler for 39.net")
+    parser.add_argument("--rate", type=float, default=2.5, help="Request rate per second (default 2.5)")
+    parser.add_argument("--concurrency", type=int, default=4, help="Max concurrent workers (default 4)")
     parser.add_argument("--hosts", type=str, default="all", help="'all', 'smaller', or comma-separated hosts")
     parser.add_argument("--limit", type=int, default=0, help="Optional limit on total URLs to crawl")
     args = parser.parse_args()
 
-    crawler = Crawler39Net(concurrency=args.concurrency, host_filter=args.hosts, limit=args.limit)
+    crawler = Crawler39Net(rate=args.rate, concurrency=args.concurrency, host_filter=args.hosts, limit=args.limit)
     asyncio.run(crawler.run())
 
 
