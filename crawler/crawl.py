@@ -70,7 +70,7 @@ GROUP_LIMITS = {
     "pmphai.com": (2.0, 4),
 }
 
-DONE_KINDS = ("ok", "notfound", "home", "robots", "http4xx")
+DONE_KINDS = ("ok", "notfound", "home", "robots", "http4xx", "nonhtml")
 MAX_ATTEMPTS = 5          # across runs, for transient errors
 MAX_BODY = 10 * 1024 * 1024
 BLOCK_PAUSES = [60, 120, 300, 600, 1200, 1800, 1800, 1800]  # seconds; group disabled for the run after the last
@@ -114,7 +114,33 @@ def classify(status: int, final_url: str, body: bytes, headers) -> str:
         return "error"
     if status >= 400:
         return "http4xx"
+    if is_non_html(final_url, headers.get("Content-Type", "") or "", body):
+        return "nonhtml"   # e.g. deleted article redirecting to its image
     return "ok"
+
+
+NON_HTML_EXT = re.compile(r"\.(jpe?g|png|gif|webp|bmp|svg|pdf|docx?|xlsx?|zip|mp4|mp3)$", re.I)
+
+
+def is_non_html(final_url: str, ctype: str, body: bytes) -> bool:
+    ctype = ctype.lower()
+    if ctype and not any(t in ctype for t in ("html", "xml", "text/plain")):
+        return True
+    if NON_HTML_EXT.search(urlparse(final_url).path):
+        return True
+    head = body[:16].lstrip()
+    return head.startswith((b"\xff\xd8\xff", b"\x89PNG", b"GIF8", b"%PDF", b"RIFF", b"PK\x03\x04"))
+
+
+def stored_ok(host: str, doc_id: int, subdirs=("db", "db_wayback", "db_alt", "db_cc")) -> bool:
+    """True if any source already saved this page; archive fetchers call it before spending a request."""
+    for sub in subdirs:
+        f = OUT / sub / f"{host}.sqlite"
+        if f.exists():
+            with sqlite3.connect(f"file:{f}?mode=ro", uri=True, timeout=30) as c:
+                if c.execute("SELECT 1 FROM pages WHERE id=? AND kind='ok'", (doc_id,)).fetchone():
+                    return True
+    return False
 
 
 class HostStore:
@@ -274,6 +300,9 @@ class Crawler:
 
     async def fetch_one(self, session, grp, host, doc_id, url, attempts):
         store = self.stores[host]
+        if stored_ok(host, doc_id, ("db_cc", "db_wayback", "db_alt")):   # an archive copy is already saved
+            self.stats[host]["archived"] += 1
+            return
         rp = self.robots.get(host)
         if rp is not None and not rp.allow_all and not rp.can_fetch("*", url):
             store.add((doc_id, url, None, None, "robots", None, 0, time.time(), attempts, None, None))

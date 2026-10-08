@@ -25,7 +25,7 @@ import certifi
 import pandas as pd
 import requests
 
-from crawl import CORPUS, OUT, STRIP_RE, HostStore, classify
+from crawl import CORPUS, OUT, STRIP_RE, HostStore, classify, stored_ok
 
 TARGET_HOSTS = [
     "nhathuoclongchau.com.vn", "laodong.vn", "vov.vn", "tamanhhospital.vn", "bingli.iiyi.com",
@@ -179,13 +179,6 @@ async def step_fetch():
     todo.sort(key=lambda t: FETCH_ORDER.index(t[1]) if t[1] in FETCH_ORDER else len(FETCH_ORDER))
     todo.reverse()
 
-    def fetched_by_cc(host, doc_id):
-        f = OUT / "db_cc" / f"{host}.sqlite"
-        if not f.exists():
-            return False
-        with sqlite3.connect(f"file:{f}?mode=ro", uri=True, timeout=30) as c:
-            return c.execute("SELECT 1 FROM pages WHERE id=? AND kind='ok'", (doc_id,)).fetchone() is not None
-
     state = dict(next_slot=0.0, paused_until=time.monotonic() + START_DELAY, rate=RATE, level=0,
                  ok_streak=0, n=0, t0=time.time())
 
@@ -240,7 +233,7 @@ async def step_fetch():
     async def worker(session):
         while todo:
             doc_id, host, url, caps = todo.pop()
-            if fetched_by_cc(host, doc_id):
+            if stored_ok(host, doc_id, ("db", "db_alt", "db_cc")):   # saved meanwhile by another source
                 continue
             st, row = stores[host], None
             for ts, orig in caps:

@@ -27,7 +27,7 @@ from urllib.parse import urlparse
 import pandas as pd
 import requests
 
-from crawl import CORPUS, OUT, STRIP_RE, HostStore, classify, is_home
+from crawl import CORPUS, OUT, STRIP_RE, HostStore, classify, is_home, stored_ok
 from wayback import norm
 
 DATA = "https://data.commoncrawl.org"
@@ -38,6 +38,7 @@ WORKERS = 3
 RATE = 2.0                      # requests per second, all threads together
 BLOCK_PAUSES = [900, 1800, 3600]
 MIN_PREFIX_URLS = 50
+MIN_RECORD = 1500               # gzipped WARC record bytes; smaller ones never hold an article
 
 log = logging.getLogger("cc")
 _local = threading.local()
@@ -140,7 +141,34 @@ def targets():
     for host in ("nhathuoclongchau.com.vn", "laodong.vn", "vov.vn", "tamanhhospital.vn"):
         seg = df[df.host == host].url.map(lambda u: urlparse(u).path.split("/")[1])
         paths[host] = [s + "/" for s, n in seg.value_counts().items() if s and n >= MIN_PREFIX_URLS]
-    return {h: (surt(h), sorted(surt(h, p) for p in ps)) for h, ps in paths.items()}
+    out = {h: (surt(h), sorted(surt(h, p) for p in ps)) for h, ps in paths.items()}
+    # 39.net answers direct requests with a slider captcha above ~0.5 req/s; its ~20 subdomains sit next to
+    # each other in SURT order, so one "net,39," range lookup per crawl covers them all.
+    pre = []
+    for host in subdomains(df, "39.net"):
+        seg = df[df.host == host].url.map(lambda u: urlparse(u).path.split("/")[1])
+        counts = seg.value_counts()
+        big = [s for s, n in counts.items() if s and n >= MIN_PREFIX_URLS]
+        if counts[big].sum() >= 0.95 * len(seg):
+            pre += [surt(host, s + "/") for s in big]
+        else:                       # e.g. jbk.39.net/<disease>/: one segment per page, take the whole host
+            pre.append(surt(host))
+    out["39.net"] = ("net,39,", sorted(pre))
+    return out
+
+
+def subdomains(df, domain):
+    return sorted(h for h in df.host.unique() if h.endswith("." + domain))
+
+
+def corpus_hosts(tg, df):
+    """Corpus hosts served by the lookup targets (target groups expand to their subdomains)."""
+    hosts = []
+    for h in tg:
+        if h == "zysj.com.cn":       # old domain of zysjonline.com, not a corpus host itself
+            continue
+        hosts += subdomains(df, h) if h == "39.net" else [h]
+    return hosts
 
 
 def collections():
@@ -253,7 +281,7 @@ def step_index():
 
 # ---------------------------------------------------------------- fetch
 
-def stored_ok(subdir, host):
+def stored_ids(subdir, host):
     f = OUT / subdir / f"{host}.sqlite"
     if not f.exists():
         return set()
@@ -265,12 +293,12 @@ def wanted():
     """norm(captured url) -> (corpus id, corpus host, corpus url) for corpus pages not stored anywhere yet."""
     df = pd.read_parquet(CORPUS)
     df["host"] = df.url.map(lambda u: urlparse(u).netloc.lower())
-    hosts = [h for h in targets() if h != "zysj.com.cn"]
+    hosts = corpus_hosts(targets(), df)
     df = df[df.host.isin(hosts)]
     have = set()
     for h in hosts:
         for sub in ("db", "db_wayback", "db_alt", "db_cc"):
-            have |= stored_ok(sub, h)
+            have |= stored_ids(sub, h)
     df = df[~df.id.isin(have)]
     want = {norm(u): (i, h, u) for i, h, u in zip(df.id, df.host, df.url)}
     # zysjonline lives on as zysj.com.cn: herbs/formulas by slug, articles by id, books via the index alignment
@@ -325,7 +353,11 @@ def step_fetch():
 
     def run(item):
         (doc_id, host, url), recs = item
-        recs = sorted(recs, key=lambda r: r["ts"], reverse=True)[:3]
+        if stored_ok(host, doc_id, ("db", "db_wayback", "db_alt")):   # saved meanwhile by another source
+            return
+        # Tiny records are redirect / JS-challenge stubs (laodong served its cookie challenge to CCBot too);
+        # skip them without a request, then try the newest real captures.
+        recs = sorted((r for r in recs if r["length"] >= MIN_RECORD), key=lambda r: r["ts"], reverse=True)[:5]
         row = None
         for r in recs:
             raw = get_range(f"{DATA}/{r['filename']}", r["offset"], r["offset"] + r["length"] - 1)

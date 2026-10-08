@@ -1,6 +1,6 @@
 {
- "updated": "2026-10-04 06:18:15",
- "elapsed_min": 1154.0,
+ "updated": "2026-10-04 08:06:50",
+ "elapsed_min": 3.2,
  "groups": {
   "120ask.com": {
    "queue": 0,
@@ -11,7 +11,7 @@
    "dead_hosts": []
   },
   "cnkang.com": {
-   "queue": 33664,
+   "queue": 0,
    "rate": 16.0,
    "disabled": false,
    "strikes": 0,
@@ -21,18 +21,13 @@
  },
  "hosts": {
   "www.120ask.com": {
-   "already_done": 35857,
-   "ok": 882229,
-   "notfound": 65,
-   "error": 328,
-   "pending_at_start": 882622
+   "already_done": 918478,
+   "ok": 1,
+   "pending_at_start": 1
   },
   "www.cnkang.com": {
-   "already_done": 36008,
-   "ok": 893585,
-   "notfound": 132,
-   "error": 9,
-   "pending_at_start": 927430
+   "already_done": 963438,
+   "pending_at_start": 0
   }
  }
 }

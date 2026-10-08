@@ -17,8 +17,9 @@ import logging
 import re
 import sys
 import time
-from collections import Counter, defaultdict
+from collections import defaultdict
 
+import numpy as np
 import pandas as pd
 import requests
 
@@ -46,21 +47,35 @@ def archived_paths():
     return paths
 
 
+# zysjonline section -> old zysj.com.cn section holding the same catalog
+SECTION = {"books": "lilunshuji", "columns": "bingzheng"}
+
+
 def corpus_books():
+    """(kind, slug) -> {new id: corpus url} for zysjonline books and columns."""
     df = pd.read_parquet(CORPUS)
-    b = df[df.url.str.contains("://zysjonline.com/books/", regex=False)]
+    b = df[df.url.str.contains(r"://zysjonline\.com/(?:books|columns)/", regex=True)]
     books = defaultdict(dict)
     for url in b.url:
-        slug, num = url.rstrip("/").split("/")[-2:]
-        books[slug][int(num)] = url
+        kind, slug, num = url.rstrip("/").split("/")[-3:]
+        books[(kind, slug)][int(num)] = url
     return books
 
 
-def old_slug(slug, paths):
+def old_slug(kind, slug, paths):
+    sec = SECTION[kind]
     for s in (slug, re.sub(r"\d+$", "", slug)):
-        if f"/lilunshuji/{s}/index.html" in paths or f"/lilunshuji/{s}/" in paths:
+        if f"/{sec}/{s}/index.html" in paths or f"/{sec}/{s}/" in paths:
             return s
     return None
+
+
+def cache_file(kind, o):
+    return CACHE / (f"{o}.html" if kind == "books" else f"{SECTION[kind]}_{o}.html")
+
+
+def report_name(kind, slug):
+    return slug if kind == "books" else f"{kind}/{slug}"
 
 
 def step_fetch():
@@ -70,14 +85,15 @@ def step_fetch():
     s = requests.Session()
     s.headers["User-Agent"] = UA
     todo = []
-    for slug in sorted(books, key=lambda k: -len(books[k])):
-        o = old_slug(slug, paths)
-        if o is None or (CACHE / f"{o}.html").exists():
+    for kind, slug in sorted(books, key=lambda k: -len(books[k])):
+        o = old_slug(kind, slug, paths)
+        if o is None or cache_file(kind, o).exists():
             continue
-        cap = paths.get(f"/lilunshuji/{o}/index.html") or paths.get(f"/lilunshuji/{o}/")
-        todo.append((o, cap))
+        sec = SECTION[kind]
+        cap = paths.get(f"/{sec}/{o}/index.html") or paths.get(f"/{sec}/{o}/")
+        todo.append((kind, o, cap))
     log.info("%d index pages to fetch", len(todo))
-    for n, (o, (ts, orig)) in enumerate(todo, 1):
+    for n, (kind, o, (ts, orig)) in enumerate(todo, 1):
         url = f"https://web.archive.org/web/{ts}id_/{orig}"
         for attempt in range(8):
             try:
@@ -87,7 +103,7 @@ def step_fetch():
                     time.sleep(600)
                     continue
                 if r.status_code == 200:
-                    (CACHE / f"{o}.html").write_bytes(r.content)
+                    cache_file(kind, o).write_bytes(r.content)
                 else:
                     log.warning("%s -> HTTP %s", o, r.status_code)
                 break
@@ -114,35 +130,50 @@ def parse_index(html):
 
 
 def align(items, ids):
-    """Best shift k (new = si + k) and the share of corpus ids landing on content entries."""
-    content = {si for si, href in items if href}
-    every = {si for si, _ in items}
-    best = (None, 0.0)
-    for k in Counter(i - si for i in sorted(ids)[:5] for si in sorted(content)[:40]):
-        hits = sum(1 for i in ids if i - k in content)
-        if hits / len(ids) > best[1]:
-            best = (k, hits / len(ids))
-    k, share = best
-    stray = sum(1 for i in ids if k is not None and i - k not in every)
-    return k, share, stray
+    """Best shift k (new = si + k), the share of corpus ids landing on content entries, the number of
+    corpus ids outside the catalog, and how many shifts reach MIN_EXACT. Every shift that puts the first
+    corpus id on some content entry is tried; a catalog with too few header gaps can be matched by several
+    shifts, and such an alignment is ambiguous."""
+    content = np.array(sorted(si for si, href in items if href), dtype=np.int64)
+    if not len(content):
+        return None, 0.0, len(ids), 0
+    lo = int(min(si for si, _ in items))
+    span = int(max(si for si, _ in items)) - lo + 1
+    is_content = np.zeros(span, dtype=bool)
+    is_content[content - lo] = True
+    in_catalog = np.zeros(span, dtype=bool)
+    in_catalog[np.array([si for si, _ in items]) - lo] = True
+    new = np.array(sorted(ids), dtype=np.int64)
+    shares = {}
+    for k in set((new[0] - content).tolist()):
+        pos = new - k - lo
+        ok = (pos >= 0) & (pos < span)
+        shares[k] = int(is_content[pos[ok]].sum()) / len(new)
+    k = max(shares, key=shares.get)
+    n_good = sum(1 for s in shares.values() if s >= MIN_EXACT)
+    pos = new - k - lo
+    inside = (pos >= 0) & (pos < span)
+    stray = int((~inside).sum() + (~in_catalog[pos[inside]]).sum())
+    return k, shares[k], stray, n_good
 
 
 def step_map():
     paths = archived_paths()
     books = corpus_books()
     rows, report, full = [], [], []   # full: every aligned chapter, archived in Wayback or not (for cc.py)
-    for slug, ids in sorted(books.items(), key=lambda kv: -len(kv[1])):
-        o = old_slug(slug, paths)
-        f = CACHE / f"{o}.html" if o else None
+    for (kind, slug), ids in sorted(books.items(), key=lambda kv: -len(kv[1])):
+        o = old_slug(kind, slug, paths)
+        name = report_name(kind, slug)
+        f = cache_file(kind, o) if o else None
         if not f or not f.exists():
-            report.append(dict(book=slug, n=len(ids), status="no index"))
+            report.append(dict(book=name, n=len(ids), status="no index"))
             continue
         items = parse_index(f.read_text(encoding="utf-8", errors="ignore"))
         if not items:
-            report.append(dict(book=slug, n=len(ids), status="unparsed index"))
+            report.append(dict(book=name, n=len(ids), status="unparsed index"))
             continue
-        k, share, stray = align(items, ids)
-        ok = k is not None and share >= MIN_EXACT
+        k, share, stray, n_good = align(items, ids)
+        ok = k is not None and share >= MIN_EXACT and n_good == 1
         href = dict(items)
         archived = 0
         if ok:
@@ -153,13 +184,14 @@ def step_map():
                 h = re.sub(r"^https?://(www\.)?zysj\.com\.cn", "", h)
                 full.append((url, "http://www.zysj.com.cn" + h, f"book-si k={k}"))
                 # chapter pages appear both as <si>.html and as <book>-<vol>-<ch>.html
-                for cand in (h, f"/lilunshuji/{o}/{new_id - k}.html"):
+                for cand in (h, f"/{SECTION[kind]}/{o}/{new_id - k}.html"):
                     if cand in paths:
                         rows.append((url, paths[cand][1], f"book-si k={k}"))
                         archived += 1
                         break
-        report.append(dict(book=slug, n=len(ids), status="aligned" if ok else "rejected",
-                           shift=k, exact_share=round(share, 4), stray=stray, archived=archived))
+        status = "aligned" if ok else ("ambiguous" if n_good > 1 else "rejected")
+        report.append(dict(book=name, n=len(ids), status=status, shift=k, exact_share=round(share, 4),
+                           stray=stray, shifts_matching=n_good, archived=archived))
     with open(WB / "alt_map_books.tsv", "w", encoding="utf-8", newline="") as fh:
         csv.writer(fh, delimiter="\t").writerows(rows)
     with open(WB / "zysj_books_full.tsv", "w", encoding="utf-8", newline="") as fh:

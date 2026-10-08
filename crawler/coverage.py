@@ -12,15 +12,71 @@ import re
 import sqlite3
 import sys
 import time
-from urllib.parse import urlparse
+from urllib.parse import unquote, urlparse
 
 import pandas as pd
 
 import cc
 import wayback
-from crawl import CORPUS, OUT, ROOT
+from crawl import CORPUS, NON_HTML_EXT, OUT, ROOT
 
 SUBDIRS = ("db", "db_wayback", "db_alt", "db_cc")
+ROBOTS_DISALLOWED = {"www.baidu.com", "baolangson.vn"}   # robots.txt disallows the corpus paths
+
+
+def _url_key(u):
+    p = urlparse(u)
+    host = (p.hostname or "").removeprefix("www.")
+    return host, unquote(p.path).replace("\xa0", " ").strip().rstrip("/").lower()
+
+
+def _slug_tokens(path):
+    last = re.sub(r"\.\w{2,5}$", "", path.rsplit("/", 1)[-1])
+    return {t for t in re.split(r"[-_\s.]+", last) if t and not t.isdigit()}
+
+
+def redirect_kind(url, final):
+    """None if final is the same URL; else same_article / different_article / non_html."""
+    (hu, pu), (hf, pf) = _url_key(url), _url_key(final)
+    if (hu, pu) == (hf, pf):
+        return None
+    if NON_HTML_EXT.search(pf):
+        return "non_html"
+    last_u, last_f = pu.rsplit("/", 1)[-1], pf.rsplit("/", 1)[-1]
+    if any(i in last_f for i in re.findall(r"\d{5,}", last_u)):   # article id kept (e.g. moved to tuoitre.vn)
+        return "same_article"
+    tu, tf = _slug_tokens(pu), _slug_tokens(pf)
+    if tu and len(tu & tf) / len(tu | tf) >= 0.6:
+        return "same_article"
+    return "different_article"
+
+
+REDIRECT_VI = {
+    "same_article": "cùng bài, chỉ đổi URL/domain (an toàn)",
+    "different_article": "chuyển sang bài khác (bài bị gộp/thay) — nội dung có thể không khớp đáp án",
+    "non_html": "chuyển về file ảnh/PDF — không có nội dung bài",
+}
+
+
+def redirected_pages():
+    """Stored pages whose content came from a different URL than the corpus one, classified by
+    redirect_kind(). different_article / non_html pages may not hold the article the organisers indexed."""
+    rows = []
+    for sub in SUBDIRS:
+        for f in (OUT / sub).glob("*.sqlite"):
+            with sqlite3.connect(f"file:{f}?mode=ro", uri=True, timeout=60) as c:
+                for i, url, final in c.execute("SELECT id, url, final_url FROM pages WHERE kind='ok'"):
+                    if not final:
+                        continue
+                    if sub == "db_wayback":   # https://web.archive.org/web/<ts>id_/<captured url>
+                        m = re.search(r"/web/\d+id_/(.+)$", final)
+                        final = m.group(1) if m else final
+                    if sub == "db_alt" or "zysj.com.cn" in final:   # deliberate alternate source, not a redirect
+                        continue
+                    kind = redirect_kind(url, final)
+                    if kind:
+                        rows.append((i, url, final, f.stem, sub, kind))
+    return pd.DataFrame(rows, columns=["id", "url", "final_url", "host", "source", "redirect"])
 
 
 def ids_of(host, kinds, subdirs=SUBDIRS):
@@ -55,6 +111,8 @@ def main():
         stored = ids_of(host, ("ok",)) & ids
         dead = (ids_of(host, ("notfound", "home", "http4xx"), ("db",)) & ids) - stored
         robots = (ids_of(host, ("robots",), ("db",)) & ids) - stored
+        if host in ROBOTS_DISALLOWED:   # crawl.py will not fetch these, whatever an earlier attempt recorded
+            robots |= ids - stored - dead
         rest = ids - stored - dead - robots
         r = dict(host=host, total=len(ids), stored=len(stored), dead=len(dead), robots=len(robots))
         no_src = rest - archive_src if host in problem else set()
@@ -148,6 +206,22 @@ def export_missing(missing, per_host):
     for host, g in sorted(by_host, key=lambda kv: -len(kv[1])):
         main_reason = g.reason.value_counts().index[0]
         lines.append(f"| {host} | {len(g):,} | {REASON_VI[main_reason]} |")
+    red = redirected_pages()
+    red.to_csv(ROOT / "redirected_pages.csv", index=False, encoding="utf-8")
+    lines += ["", "## Trang đã lấy nhưng bị chuyển hướng sang URL khác", "",
+              "Các trang này **đã lưu**, nhưng site gốc trả về nội dung từ một URL khác. Phân loại:", ""]
+    lines += [f"- **{k}**: {REDIRECT_VI[k]}" for k in REDIRECT_VI]
+    lines += ["", "Danh sách đầy đủ: `redirected_pages.csv` (id, url, final_url, host, source, redirect).", "",
+              "| Domain | Đã lưu | same_article | different_article | non_html |", "|---|---:|---:|---:|---:|"]
+    stored_by_host = per_host.stored.to_dict()
+    tab = red.pivot_table(index="host", columns="redirect", values="id", aggfunc="count", fill_value=0)
+    for k in REDIRECT_VI:
+        if k not in tab:
+            tab[k] = 0
+    tab = tab.sort_values(["different_article", "non_html", "same_article"], ascending=False)
+    for host, r in tab.iterrows():
+        lines.append(f"| {host} | {int(stored_by_host.get(host, 0)):,} | {r.same_article:,} | "
+                     f"{r.different_article:,} | {r.non_html:,} |")
     lines += ["", "## Chi tiết", ""]
     for host, g in sorted(by_host, key=lambda kv: -len(kv[1])):
         lines.append(f"### {host} ({len(g):,} trang)")
