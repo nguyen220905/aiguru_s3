@@ -1,6 +1,6 @@
 {
- "updated": "2026-10-06 08:36:41",
- "elapsed_min": 2212.4,
+ "updated": "2026-10-12 23:30:40",
+ "elapsed_min": 90.8,
  "groups": {
   "iiyi.com": {
    "queue": 0,
@@ -9,19 +9,16 @@
    "strikes": 0,
    "paused_for": 0,
    "dead_hosts": [
-    "article.iiyi.com",
-    "bingli.iiyi.com"
+    "article.iiyi.com"
    ]
   },
   "39.net": {
-   "queue": 92405,
-   "rate": 1.52,
+   "queue": 0,
+   "rate": 3.0,
    "disabled": false,
-   "strikes": 1,
-   "paused_for": 34,
-   "dead_hosts": [
-    "ask.39.net"
-   ]
+   "strikes": 0,
+   "paused_for": 0,
+   "dead_hosts": []
   },
   "familydoctor.com.cn": {
    "queue": 0,
@@ -169,17 +166,7 @@
   },
   "dantri.com.vn": {
    "queue": 0,
-   "rate": 1.33,
-   "disabled": false,
-   "strikes": 0,
-   "paused_for": 0,
-   "dead_hosts": [
-    "dantri.com.vn"
-   ]
-  },
-  "99.com.cn": {
-   "queue": 0,
-   "rate": 2.0,
+   "rate": 0.5,
    "disabled": false,
    "strikes": 0,
    "paused_for": 0,
@@ -234,11 +221,11 @@
    "dead_hosts": []
   },
   "laodong.vn": {
-   "queue": 18908,
+   "queue": 18894,
    "rate": 0.2,
-   "disabled": true,
-   "strikes": 8,
-   "paused_for": 0,
+   "disabled": false,
+   "strikes": 7,
+   "paused_for": 542,
    "dead_hosts": []
   },
   "medlatec.vn": {
@@ -266,11 +253,11 @@
    "dead_hosts": []
   },
   "nhathuoclongchau.com.vn": {
-   "queue": 78807,
+   "queue": 78996,
    "rate": 0.2,
-   "disabled": true,
-   "strikes": 8,
-   "paused_for": 0,
+   "disabled": false,
+   "strikes": 7,
+   "paused_for": 542,
    "dead_hosts": []
   },
   "baodaklak.vn": {
@@ -282,11 +269,11 @@
    "dead_hosts": []
   },
   "pharmacity.io": {
-   "queue": 322,
+   "queue": 548,
    "rate": 0.2,
-   "disabled": true,
-   "strikes": 8,
-   "paused_for": 0,
+   "disabled": false,
+   "strikes": 7,
+   "paused_for": 544,
    "dead_hosts": []
   },
   "qihuangzhishu.com": {
@@ -322,10 +309,10 @@
    "dead_hosts": []
   },
   "tamanhhospital.vn": {
-   "queue": 2374,
-   "rate": 0.2,
-   "disabled": true,
-   "strikes": 8,
+   "queue": 0,
+   "rate": 2.0,
+   "disabled": false,
+   "strikes": 0,
    "paused_for": 0,
    "dead_hosts": []
   },
@@ -394,16 +381,24 @@
    "dead_hosts": []
   },
   "vov.vn": {
-   "queue": 7639,
+   "queue": 5431,
    "rate": 0.2,
-   "disabled": true,
-   "strikes": 8,
-   "paused_for": 0,
+   "disabled": false,
+   "strikes": 7,
+   "paused_for": 540,
    "dead_hosts": []
   },
   "vov2.vov.vn": {
    "queue": 0,
    "rate": 2.0,
+   "disabled": false,
+   "strikes": 0,
+   "paused_for": 0,
+   "dead_hosts": []
+  },
+  "120ask.com": {
+   "queue": 0,
+   "rate": 16.0,
    "disabled": false,
    "strikes": 0,
    "paused_for": 0,
@@ -420,6 +415,14 @@
   "baidu.com": {
    "queue": 0,
    "rate": 2.0,
+   "disabled": false,
+   "strikes": 0,
+   "paused_for": 0,
+   "dead_hosts": []
+  },
+  "cnkang.com": {
+   "queue": 0,
+   "rate": 16.0,
    "disabled": false,
    "strikes": 0,
    "paused_for": 0,
@@ -465,14 +468,6 @@
    "paused_for": 0,
    "dead_hosts": []
   },
-  "vinmec.com": {
-   "queue": 0,
-   "rate": 3.0,
-   "disabled": false,
-   "strikes": 0,
-   "paused_for": 0,
-   "dead_hosts": []
-  },
   "wujue.com": {
    "queue": 0,
    "rate": 6.0,
@@ -498,11 +493,11 @@
    "dead_hosts": []
   },
   "youmed.vn": {
-   "queue": 5826,
+   "queue": 5828,
    "rate": 0.2,
-   "disabled": true,
-   "strikes": 8,
-   "paused_for": 0,
+   "disabled": false,
+   "strikes": 7,
+   "paused_for": 540,
    "dead_hosts": []
   },
   "zhongyibaodian.net": {
@@ -514,51 +509,40 @@
    "dead_hosts": []
   },
   "zysjonline.com": {
-   "queue": 243340,
+   "queue": 6575,
    "rate": 0.2,
-   "disabled": true,
-   "strikes": 8,
-   "paused_for": 0,
+   "disabled": false,
+   "strikes": 7,
+   "paused_for": 546,
    "dead_hosts": []
   }
  },
  "hosts": {
   "article.iiyi.com": {
    "already_done": 0,
-   "error": 60,
-   "archived": 10,
-   "pending_at_start": 5641
+   "error": 62,
+   "archived": 17,
+   "pending_at_start": 729
   },
   "ask.39.net": {
-   "already_done": 64555,
-   "ok": 37758,
-   "error": 2761,
-   "notfound": 24,
-   "captcha": 70,
-   "archived": 178,
-   "pending_at_start": 272820
+   "already_done": 337375,
+   "pending_at_start": 0
   },
   "ask.familydoctor.com.cn": {
    "already_done": 3,
    "pending_at_start": 0
   },
   "baby.39.net": {
-   "already_done": 5308,
-   "ok": 15108,
-   "archived": 1954,
-   "error": 68,
-   "captcha": 24,
-   "pending_at_start": 22313
+   "already_done": 27617,
+   "pending_at_start": 0
   },
   "bachmai.gov.vn": {
    "already_done": 2783,
    "pending_at_start": 0
   },
   "baidianfeng.familydoctor.com.cn": {
-   "already_done": 3709,
-   "ok": 85,
-   "error": 4,
-   "pending_at_start": 89
+   "already_done": 3794,
+   "pending_at_start": 0
   },
   "baoangiang.com.vn": {
    "already_done": 10738,
@@ -626,90 +610,52 @@
   },
   "bingli.iiyi.com": {
    "already_done": 0,
-   "archived": 14,
-   "error": 60,
-   "pending_at_start": 24990
+   "archived": 3,
+   "error": 2,
+   "pending_at_start": 5
   },
   "byby.39.net": {
-   "already_done": 105,
-   "ok": 254,
-   "error": 6,
-   "archived": 1,
-   "pending_at_start": 334
-  },
-  "cancer.39.net": {
-   "already_done": 1620,
-   "ok": 3985,
-   "archived": 1262,
-   "captcha": 6,
-   "error": 28,
-   "pending_at_start": 6795
-  },
-  "care.39.net": {
-   "already_done": 2984,
-   "ok": 7879,
-   "archived": 1415,
-   "captcha": 13,
-   "pending_at_start": 12150
-  },
-  "dantri.com.vn": {
-   "already_done": 811,
-   "ok": 265,
-   "blocked": 1,
-   "http4xx": 71,
-   "error": 63,
-   "pending_at_start": 1252
-  },
-  "ek.39.net": {
-   "already_done": 611,
-   "ok": 1654,
-   "error": 15,
-   "archived": 295,
-   "captcha": 1,
-   "pending_at_start": 2611
-  },
-  "fitness.39.net": {
-   "already_done": 2330,
-   "ok": 5607,
-   "error": 34,
-   "archived": 1839,
-   "captcha": 8,
-   "pending_at_start": 9736
-  },
-  "fk.39.net": {
-   "already_done": 1874,
-   "ok": 4613,
-   "archived": 1498,
-   "error": 37,
-   "captcha": 6,
-   "pending_at_start": 7938
-  },
-  "fk.99.com.cn": {
-   "already_done": 1,
+   "already_done": 439,
    "pending_at_start": 0
   },
+  "cancer.39.net": {
+   "already_done": 8413,
+   "pending_at_start": 0
+  },
+  "care.39.net": {
+   "already_done": 15128,
+   "archived": 1,
+   "pending_at_start": 1
+  },
+  "dantri.com.vn": {
+   "already_done": 2063,
+   "pending_at_start": 0
+  },
+  "ek.39.net": {
+   "already_done": 3220,
+   "archived": 2,
+   "pending_at_start": 2
+  },
+  "fitness.39.net": {
+   "already_done": 12061,
+   "pending_at_start": 0
+  },
+  "fk.39.net": {
+   "already_done": 9808,
+   "archived": 1,
+   "pending_at_start": 1
+  },
   "food.39.net": {
-   "already_done": 2143,
-   "ok": 5105,
-   "error": 39,
-   "archived": 1710,
-   "captcha": 4,
-   "pending_at_start": 8881
+   "already_done": 11019,
+   "pending_at_start": 0
   },
   "gan.39.net": {
-   "already_done": 984,
-   "ok": 2699,
-   "error": 28,
-   "archived": 368,
-   "captcha": 3,
-   "pending_at_start": 4043
+   "already_done": 5026,
+   "pending_at_start": 0
   },
   "gc.39.net": {
-   "already_done": 344,
-   "ok": 866,
-   "archived": 217,
-   "error": 6,
-   "pending_at_start": 1402
+   "already_done": 1745,
+   "pending_at_start": 0
   },
   "giadinhonline.vn": {
    "already_done": 16728,
@@ -717,12 +663,8 @@
    "pending_at_start": 1
   },
   "gk.39.net": {
-   "already_done": 423,
-   "ok": 1189,
-   "error": 17,
-   "archived": 37,
-   "captcha": 1,
-   "pending_at_start": 1636
+   "already_done": 2059,
+   "pending_at_start": 0
   },
   "hanoimoi.vn": {
    "already_done": 1283,
@@ -733,11 +675,8 @@
    "pending_at_start": 0
   },
   "heart.39.net": {
-   "already_done": 1214,
-   "ok": 2527,
-   "error": 22,
-   "archived": 1093,
-   "pending_at_start": 4751
+   "already_done": 5963,
+   "pending_at_start": 0
   },
   "hellobacsi.com": {
    "already_done": 11747,
@@ -748,10 +687,8 @@
    "pending_at_start": 0
   },
   "jbk.39.net": {
-   "already_done": 3745,
-   "ok": 3070,
-   "archived": 8782,
-   "pending_at_start": 15397
+   "already_done": 19140,
+   "pending_at_start": 0
   },
   "khoahocphothong.vn": {
    "already_done": 8143,
@@ -759,17 +696,13 @@
   },
   "laodong.vn": {
    "already_done": 12354,
-   "archived": 16,
-   "blocked": 9,
+   "archived": 30,
+   "blocked": 7,
    "pending_at_start": 18928
   },
   "man.39.net": {
-   "already_done": 971,
-   "ok": 3095,
-   "archived": 210,
-   "captcha": 4,
-   "error": 29,
-   "pending_at_start": 4349
+   "already_done": 5320,
+   "pending_at_start": 0
   },
   "medlatec.vn": {
    "already_done": 24762,
@@ -785,25 +718,17 @@
   },
   "nhathuoclongchau.com.vn": {
    "already_done": 285,
-   "archived": 502,
-   "blocked": 9,
+   "archived": 313,
+   "blocked": 7,
    "pending_at_start": 79313
   },
   "nk.39.net": {
-   "already_done": 1304,
-   "ok": 3398,
-   "archived": 741,
-   "captcha": 5,
-   "error": 23,
-   "pending_at_start": 5346
+   "already_done": 6649,
+   "pending_at_start": 0
   },
   "pf.39.net": {
-   "already_done": 346,
-   "ok": 775,
-   "archived": 130,
-   "error": 9,
-   "captcha": 2,
-   "pending_at_start": 1192
+   "already_done": 1538,
+   "pending_at_start": 0
   },
   "phunusuckhoe.giadinhonline.vn": {
    "already_done": 27577,
@@ -815,8 +740,8 @@
   },
   "pmc-ecm-healthblog.beta.pharmacity.io": {
    "already_done": 0,
-   "archived": 5007,
-   "blocked": 10,
+   "archived": 4781,
+   "blocked": 7,
    "pending_at_start": 5333
   },
   "qihuangzhishu.com": {
@@ -824,24 +749,16 @@
    "pending_at_start": 0
   },
   "qy.familydoctor.com.cn": {
-   "already_done": 37,
-   "ok": 3,
-   "pending_at_start": 3
+   "already_done": 40,
+   "pending_at_start": 0
   },
   "shen.39.net": {
-   "already_done": 659,
-   "ok": 1394,
-   "error": 16,
-   "archived": 542,
-   "captcha": 2,
-   "pending_at_start": 2564
+   "already_done": 3220,
+   "pending_at_start": 0
   },
   "sj.39.net": {
-   "already_done": 211,
-   "ok": 488,
-   "archived": 73,
-   "error": 4,
-   "pending_at_start": 731
+   "already_done": 942,
+   "pending_at_start": 0
   },
   "special.vietnamplus.vn": {
    "already_done": 1,
@@ -852,30 +769,25 @@
    "pending_at_start": 0
   },
   "suckhoedoisong.vn": {
-   "already_done": 85487,
-   "ok": 335,
-   "error": 1,
-   "pending_at_start": 336
+   "already_done": 85823,
+   "pending_at_start": 0
   },
   "suckhoeviet.org.vn": {
    "already_done": 5627,
    "pending_at_start": 0
   },
   "tamanhhospital.vn": {
-   "already_done": 1382,
-   "archived": 501,
-   "blocked": 9,
-   "pending_at_start": 2879
+   "already_done": 1384,
+   "archived": 2877,
+   "pending_at_start": 2877
   },
   "test.pmphai.com": {
-   "already_done": 15118,
-   "ok": 2,
-   "pending_at_start": 2
+   "already_done": 15120,
+   "pending_at_start": 0
   },
   "thanhnien.vn": {
-   "already_done": 71964,
-   "ok": 147,
-   "pending_at_start": 147
+   "already_done": 72111,
+   "pending_at_start": 0
   },
   "thaythuocvietnam.vn": {
    "already_done": 2927,
@@ -890,20 +802,12 @@
    "pending_at_start": 0
   },
   "tnb.39.net": {
-   "already_done": 781,
-   "ok": 1646,
-   "archived": 954,
-   "error": 11,
-   "captcha": 1,
-   "pending_at_start": 3397
-  },
-  "tuoitre.vn": {
-   "already_done": 3892,
-   "ok": 1,
+   "already_done": 4174,
+   "archived": 1,
    "pending_at_start": 1
   },
-  "v.familydoctor.com.cn": {
-   "already_done": 10,
+  "tuoitre.vn": {
+   "already_done": 3893,
    "pending_at_start": 0
   },
   "vietnamnet.vn": {
@@ -916,8 +820,8 @@
   },
   "vov.vn": {
    "already_done": 2133,
-   "archived": 8,
-   "blocked": 9,
+   "archived": 2216,
+   "blocked": 7,
    "pending_at_start": 7651
   },
   "vov2.vov.vn": {
@@ -925,41 +829,37 @@
    "pending_at_start": 0
   },
   "wei.39.net": {
-   "already_done": 746,
-   "ok": 1992,
-   "archived": 394,
-   "error": 14,
-   "captcha": 2,
-   "pending_at_start": 3148
+   "already_done": 3891,
+   "pending_at_start": 0
   },
   "woman.39.net": {
-   "already_done": 2239,
-   "ok": 5947,
-   "error": 45,
-   "archived": 1390,
-   "captcha": 7,
-   "pending_at_start": 9448
-  },
-  "www.a-hospital.com": {
-   "already_done": 169338,
-   "ok": 1,
+   "already_done": 11682,
+   "archived": 1,
    "pending_at_start": 1
   },
+  "www.120ask.com": {
+   "already_done": 918479,
+   "pending_at_start": 0
+  },
+  "www.a-hospital.com": {
+   "already_done": 169339,
+   "pending_at_start": 0
+  },
   "www.baidu.com": {
-   "already_done": 682,
-   "robots": 1949,
-   "pending_at_start": 1949
+   "already_done": 2631,
+   "pending_at_start": 0
+  },
+  "www.cnkang.com": {
+   "already_done": 963438,
+   "pending_at_start": 0
   },
   "www.familydoctor.cn": {
    "already_done": 44,
    "pending_at_start": 0
   },
   "www.familydoctor.com.cn": {
-   "already_done": 445105,
-   "ok": 1691,
-   "error": 656,
-   "home": 1,
-   "pending_at_start": 2348
+   "already_done": 446842,
+   "pending_at_start": 0
   },
   "www.msdmanuals.cn": {
    "already_done": 6173,
@@ -981,50 +881,33 @@
    "already_done": 3695,
    "pending_at_start": 0
   },
-  "www.vinmec.com": {
-   "already_done": 26129,
-   "pending_at_start": 0
-  },
   "www.wujue.com": {
-   "already_done": 53243,
-   "ok": 90,
-   "error": 8,
-   "pending_at_start": 98
+   "already_done": 53333,
+   "pending_at_start": 0
   },
   "www.youlai.cn": {
    "already_done": 46119,
    "pending_at_start": 0
   },
   "www.zydcd.com": {
-   "already_done": 78664,
-   "ok": 13,
-   "home": 1,
-   "error": 2,
-   "pending_at_start": 16
-  },
-  "yanglao.familydoctor.com.cn": {
-   "already_done": 2,
+   "already_done": 78678,
    "pending_at_start": 0
   },
   "youmed.vn": {
    "already_done": 1359,
-   "blocked": 10,
+   "blocked": 7,
    "pending_at_start": 5830
   },
-  "ypk.familydoctor.com.cn": {
-   "already_done": 1,
-   "pending_at_start": 0
-  },
   "zhongyibaodian.net": {
-   "already_done": 146698,
-   "ok": 2,
-   "pending_at_start": 2
+   "already_done": 146700,
+   "pending_at_start": 0
   },
   "zysjonline.com": {
    "already_done": 0,
-   "archived": 3,
-   "blocked": 10,
-   "pending_at_start": 243347
+   "archived": 11,
+   "blocked": 8,
+   "error": 1,
+   "pending_at_start": 6591
   }
  }
 }

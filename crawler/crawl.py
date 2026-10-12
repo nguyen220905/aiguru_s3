@@ -28,7 +28,7 @@ import pandas as pd
 import zstandard
 
 ROOT = Path("D:/project_r2ai")
-CORPUS = ROOT / "data" / "links_corpus.parquet"
+CORPUS = ROOT / "data" / "v2" / "links_corpus_vi_en_zh.parquet"   # 2026-10-12 release: vi + zh subset + PubMed
 OUT = ROOT / "crawl"
 
 UA = ("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
@@ -65,6 +65,8 @@ GROUP_LIMITS = {
     "giadinhonline.vn": (3.0, 6),
     "vinmec.com": (3.0, 6),
     "medlatec.vn": (3.0, 6),
+    "youmed.vn": (0.5, 2),        # answers 403 when pushed
+    "dantri.com.vn": (0.5, 2),    # drops connections when pushed
     "vov2.vov.vn": (2.0, 4),      # separate from Cloudflare-blocked vov.vn
     "iiyi.com": (2.0, 4),
     "pmphai.com": (2.0, 4),
