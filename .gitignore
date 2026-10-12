@@ -11,6 +11,9 @@ crawl/cc/
 
 # Cache and temporary data
 data/.cache/
+data/**/.cache/
+.cache/
+*.parquet
 __pycache__/
 *.py[cod]
 *$py.class

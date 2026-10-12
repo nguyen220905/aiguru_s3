@@ -48,6 +48,7 @@ task_categories:
 language:
   - vi
   - zh
+  - en
 size_categories:
   - 1M<n<10M
 tags:
@@ -55,6 +56,8 @@ tags:
   - healthcare
   - vietnamese
   - chinese
+  - english
+  - pubmed
   - vibiomir
   - medkb
 ---
@@ -64,11 +67,11 @@ tags:
 Complete crawl corpus for AI Guru Season 3: Medical Knowledge Base & QA.
 
 ## Overview
-- **Total Pages / Documents:** > 3.7 Million pages
-- **Total Storage:** ~49 GB across SQLite databases
-- **Languages:** Vietnamese (vi) & Chinese (zh)
-- **Primary Source Domains:** 97 direct crawled domains + Common Crawl & Wayback Machine archives
-- **Coverage:** 100% of reachable missing pages crawled (including Lao Động, Tâm Anh Hospital, VOV, Báo Lạng Sơn, etc.)
+- **Total Pages / Documents:** > 4.4 Million pages
+- **Total Storage:** ~55 GB across SQLite databases
+- **Languages:** Vietnamese (vi), Chinese (zh) & English (en - PubMed)
+- **Primary Source Domains:** 97 direct crawled domains + PubMed (240k articles) + Common Crawl & Wayback Machine archives
+- **Coverage:** 100% of reachable missing pages crawled (including Lao Động, Tâm Anh Hospital, VOV, Báo Lạng Sơn, etc.) and PubMed.
 
 ## Directory Structure
 ```
@@ -261,6 +264,20 @@ def main():
                 args.repo_id,
                 f"Add report {doc_file}",
             )
+
+    # Upload v2 dataset files if present
+    v2_dir = ROOT / "data" / "v2"
+    if v2_dir.exists():
+        for v2_file in ["links_corpus_vi_en_zh.parquet", "new_links.parquet", "query.parquet", "README.md"]:
+            f_path = v2_dir / v2_file
+            if f_path.exists():
+                upload_file_with_retry(
+                    api,
+                    f_path,
+                    f"data/v2/{v2_file}",
+                    args.repo_id,
+                    f"Add v2 dataset file {v2_file}",
+                )
 
     # Collect all sqlite database files to upload
     upload_tasks: List[Tuple[Path, str]] = []
